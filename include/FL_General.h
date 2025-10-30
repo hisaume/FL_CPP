@@ -5,7 +5,7 @@
 |	|FILE|:    FL_General.h
 |
 |	FL Library
-|	version 2.4
+|	version 2.40
 
 ---------------------------------------------------------------------------*/
 // Comment this out for FL RPG game, but in for script editor EXE.
@@ -17,32 +17,31 @@
 /*------------------------------------------------------------------------------------
 						Message & Error output to Log file
 ------------------------------------------------------------------------------------*/
-#include "FL_General.h"
 #include "FL_File.h"
 
 extern FL::flTextFileW						gLog;
 //inline void RPGLOG(s)								{ gLog.WriteText( s );	}	// legacy
-inline void LOG( std::wstring s )					{ gLog.WriteText( s ); }
+inline void LOG( const std::wstring& s )					{ gLog.WriteText( s ); }
 
-inline void WARN( std::wstring s )					{ gLog.WriteText( std::wstring(L"*WARNING* ") + s ); }
-inline void WARN( std::wstring v,std::wstring s )	{ gLog.WriteText( std::wstring(L"*WARNING* ") + std::wstring(L"[")+v+std::wstring(L"] ") + s ); }
-inline void WARN( std::string v, std::wstring s )	{ WARN( FL::ASCII_to_UTF8(v), s ); }
+inline void WARN( const std::wstring& s )					{ gLog.WriteText( std::wstring(L"*WARNING* ") + s ); }
+inline void WARN( const std::wstring& v, const std::wstring& s )	{ gLog.WriteText( std::wstring(L"*WARNING* ") + std::wstring(L"[")+v+std::wstring(L"] ") + s ); }
+inline void WARN( const std::string& v, const std::wstring& s )	{ WARN( FL::ASCII_to_UTF8(v), s ); }
 
-inline void ERR( std::wstring s)					{ gLog.WriteText( std::wstring(L"*ERROR* ") + s ); }
-inline void ERR( std::wstring v,std::wstring s )	{ gLog.WriteText( std::wstring(L"*ERROR* ") + std::wstring(L"[")+v+std::wstring(L"] ") + s ); }
-inline void ERR( std::string v, std::wstring s )	{ ERR( FL::ASCII_to_UTF8(v), s ); }
+inline void ERR( const std::wstring& s)					{ gLog.WriteText( std::wstring(L"*ERROR* ") + s ); }
+inline void ERR( const std::wstring& v, const std::wstring& s )	{ gLog.WriteText( std::wstring(L"*ERROR* ") + std::wstring(L"[")+v+std::wstring(L"] ") + s ); }
+inline void ERR( const std::string& v, const std::wstring& s )	{ ERR( FL::ASCII_to_UTF8(v), s ); }
 
-inline void LOGVAR( std::wstring s, bool newline =false )	{	std::wstring m=L"["; m+=s; m+=L"]"; if(newline)m+=L"\n";
+inline void LOGVAR( const std::wstring& s, bool newline =false )	{	std::wstring m=L"["; m+=s; m+=L"]"; if(newline)m+=L"\n";
 																gLog.WriteText(m.c_str());				}
-inline void LOGVAR( std::string s, bool newline =false )	{ LOGVAR(FL::ASCII_to_UTF8(s), newline);	}
+inline void LOGVAR( const std::string& s, bool newline =false )	{ LOGVAR(FL::ASCII_to_UTF8(s), newline);	}
 inline void LOGVAR( int i, bool newline =false )			{ LOGVAR(FL::LONG2WSTRING((long)i),newline);}
 inline void LOGVAR( unsigned int i, bool newline =false )	{ LOGVAR(FL::LONG2WSTRING((long)i),newline);		}
 inline void LOGVAR( float f, bool newline =false )			{ LOGVAR(FL::FLOAT2WSTRING(f));				}
 
-inline void LOGHI( std::wstring s )							{ gLog.WriteText( s ); }
-inline void LOGHIVAR( std::wstring s, bool newline =false )	{	std::wstring m=L"["; m+=s; m+=L"]"; if(newline)m+=L"\n";
+inline void LOGHI( const std::wstring& s )							{ gLog.WriteText( s ); }
+inline void LOGHIVAR( const std::wstring& s, bool newline =false )	{	std::wstring m=L"["; m+=s; m+=L"]"; if(newline)m+=L"\n";
 																gLog.WriteText(m.c_str());				}
-inline void LOGHIVAR( std::string s, bool newline =false )	{ LOGVAR(FL::ASCII_to_UTF8(s), newline);	}
+inline void LOGHIVAR( const std::string& s, bool newline =false )	{ LOGVAR(FL::ASCII_to_UTF8(s), newline);	}
 inline void LOGHIVAR( int i, bool newline =false )			{ LOGVAR(FL::LONG2WSTRING((long)i),newline);}
 inline void LOGHIVAR( unsigned int i, bool newline =false )	{ LOGVAR(FL::LONG2WSTRING((long)i),newline);		}
 inline void LOGHIVAR( float f, bool newline =false )		{ LOGVAR(FL::FLOAT2WSTRING(f));				}
@@ -67,7 +66,7 @@ extern FL::DISPLAY_RATIO		gDisplayRatio;
 	This must be defined in and around main() / WinMain().
 */
 extern std::map<string,wstring>		gStringTable;
-inline wstring STRING_TABLE( string st_id, wstring default_string )
+inline wstring STRING_TABLE( const string& st_id, const wstring& default_string )
 {
 	auto iter = gStringTable.begin();
 	if( gStringTable.end() == (iter=gStringTable.find(st_id)) )
@@ -84,10 +83,10 @@ extern bool				gUseDefaultLanguage;
 /*----------------------------------
 			Paths
 ----------------------------------*/
-//namespace PATH
-//{
-//	const std::string XML = "./data/dbscan/";
-//}// End namespace PATH
+/*namespace PATH
+{
+	const std::string XML = "./data/dbscan/";
+}*/ // End namespace PATH
 
 
 /*------------------------------------------------------------------------------------

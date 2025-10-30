@@ -35,11 +35,10 @@ void FL_JoypadEmulatorKeyMap::MapKey( OIS::KeyCode kc, eJOYPAD_BUTTON b )
 }
 
 // Returns true if the given KeyCode is mapped.
-bool FL_JoypadEmulatorKeyMap::Exist( OIS::KeyCode id )
+bool FL_JoypadEmulatorKeyMap::Exist( OIS::KeyCode id ) const
 {
-	std::deque<OIS::KeyCode>::iterator iter;
-	for( iter=m_KeyExist.begin(); iter!=m_KeyExist.end(); ++iter )
-		if( (*iter) == id )
+	for( const auto& kc : m_KeyExist )
+		if( kc == id )
 			return true;
 	return false;
 }
@@ -65,13 +64,12 @@ void FL_JoypadEmulatorKeyMap::KeyDown( OIS::KeyCode id, float secs )
 	}
 }
 
-int FL_JoypadEmulatorKeyMap::SearchKeyCode( eJOYPAD_BUTTON b )
+int FL_JoypadEmulatorKeyMap::SearchKeyCode( eJOYPAD_BUTTON b ) const
 {
-	std::map<OIS::KeyCode,eJOYPAD_BUTTON>::iterator iter;
-	for( iter=m_KeyMap.begin(); iter!=m_KeyMap.end(); ++iter )
+	for( const auto& entry : m_KeyMap )
 	{
-		if( (*iter).second == b )
-			return (*iter).first;
+		if( entry.second == b )
+			return entry.first;
 	}
 	return -1;	// not found.
 }
@@ -203,7 +201,7 @@ void FL_BufferedInput::MapJoypadButton( int button, eJOYPAD_BUTTON jb )
 
 eJOYPAD_BUTTON FL_BufferedInput::GetJoyCode( int button )
 {
-	if( (unsigned int)(button+1) < m_JoyCode.size() )	// if element exists
+	if( static_cast<unsigned int>(button) < m_JoyCode.size() )	// if element exists
 		return m_JoyCode[button];
 	else
 		return JOYP_NONE;

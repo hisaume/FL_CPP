@@ -8,7 +8,7 @@
 #include <FL_GeneralTools.h>
 
 
-void print( std::string &msg )
+void print( const std::string &msg )
 {
 	printf( "%s", msg.c_str() );
 }
@@ -43,7 +43,7 @@ void LineCallback(asIScriptContext *ctx, DWORD *timeOut)
 				GetScriptMessage()->clear();									\
 			} while( 0 )
 
-bool FL_Script::CheckScript( std::string filename )
+bool FL_Script::CheckScript( const std::string& filename )
 {
 	if( !LoadScript(filename) ) {
 		m_ScriptMessage.push_back( "ERROR: Script could not be loaded. Ensure the path/filename is correct. The text format must be UTF-8.\n" );
@@ -87,7 +87,7 @@ bool FL_Script::_SetLineCallback( asIScriptContext *ctx, DWORD *timeOut )
 	return true;
 }
 
-int FL_Script::LoadScript( std::string filename, std::string module_name )
+int FL_Script::LoadScript( const std::string& filename, const std::string& module_name )
 {
 	m_ScriptMessage.push_back( std::string("[") + filename + "," + module_name + "] Loading...\n" );
 	int r = m_ScriptBuilder.StartNewModule( m_ScriptEngine, module_name.c_str() ); assert( r >= 0 );
@@ -131,7 +131,7 @@ int FL_Script::LoadAndCompileOneOff( std::string filename, std::string module_na
 }*/
 
 
-int FL_Script::RunSCRIPT( const char *fname, asIScriptContext **context, std::string module_name )
+int FL_Script::RunSCRIPT( const char *fname, asIScriptContext **context, const std::string& module_name )
 {
 	if( context == NULL )
 		context = &m_ScriptContext;
@@ -148,7 +148,7 @@ int FL_Script::RunSCRIPT( const char *fname, asIScriptContext **context, std::st
 	return 1;
 }
 
-int FL_Script::RunSCRIPT_Int( const char *fname, int arg1, asIScriptContext **context, std::string module_name )
+int FL_Script::RunSCRIPT_Int( const char *fname, int arg1, asIScriptContext **context, const std::string& module_name )
 {
 	if( context == NULL )
 		context = &m_ScriptContext;
@@ -168,7 +168,7 @@ int FL_Script::RunSCRIPT_Int( const char *fname, int arg1, asIScriptContext **co
 	return 1;
 }
 
-int FL_Script::RunSCRIPT_IntInt( const char *fname, int arg1, int arg2, asIScriptContext **context, std::string module_name )
+int FL_Script::RunSCRIPT_IntInt( const char *fname, int arg1, int arg2, asIScriptContext **context, const std::string& module_name )
 {
 	if( context == NULL )
 		context = &m_ScriptContext;
@@ -190,7 +190,7 @@ int FL_Script::RunSCRIPT_IntInt( const char *fname, int arg1, int arg2, asIScrip
 }
 
 int FL_Script::RunSCRIPT_IntIntStringStringString( const char *fname, int arg1, int arg2, wstring *argStr,
-													asIScriptContext **context, std::string module_name )
+													asIScriptContext **context, const std::string& module_name )
 {
 	if( context == NULL )
 		context = &m_ScriptContext;
@@ -219,7 +219,7 @@ int FL_Script::RunSCRIPT_IntIntStringStringString( const char *fname, int arg1, 
 }
 
 int FL_Script::RunSCRIPT_IntStringStringString( const char *fname, int arg1, wstring *argStr,
-												asIScriptContext **context, std::string module_name )
+												asIScriptContext **context, const std::string& module_name )
 {
 	if( context == NULL )
 		context = &m_ScriptContext;
@@ -246,7 +246,7 @@ int FL_Script::RunSCRIPT_IntStringStringString( const char *fname, int arg1, wst
 	return 1;
 }
 
-int FL_Script::RunSCRIPT_StringStringStringString( const char *fname, std::string *argStr, asIScriptContext **context, std::string module_name )
+int FL_Script::RunSCRIPT_StringStringStringString( const char *fname, std::string *argStr, asIScriptContext **context, const std::string& module_name )
 {
 	if( context == NULL )
 		context = &m_ScriptContext;
@@ -269,7 +269,7 @@ int FL_Script::RunSCRIPT_StringStringStringString( const char *fname, std::strin
 	return 1;
 }
 
-int FL_Script::_RunSCRIPT_Prepare( asIScriptContext **context, const char *fname, std::string module_name )
+int FL_Script::_RunSCRIPT_Prepare( asIScriptContext **context, const char *fname, const std::string& module_name )
 {
 	std::string msg;
 
@@ -380,4 +380,3 @@ int FL_Script::_RunSCRIPT_Execute( asIScriptContext **context )
 
 	return 1;
 }
-

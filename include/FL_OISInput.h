@@ -118,10 +118,10 @@ public:
 												}
 												return false;
 											}
-	bool	IsDown( eJOYPAD_BUTTON id )		{	return m_Button[id]; }
-	bool	IsDown( eJOYPAD_BUTTON id, float &duration )		{ duration = m_Duration[id]; return m_Button[id]; }
+	bool	IsDown( eJOYPAD_BUTTON id ) const		{	return m_Button[id]; }
+	bool	IsDown( eJOYPAD_BUTTON id, float &duration ) const		{ duration = m_Duration[id]; return m_Button[id]; }
 	// True if the button has been down for long (JP_LONG_PRESS)
-	bool	IsDownLong( eJOYPAD_BUTTON id )	{
+	bool	IsDownLong( eJOYPAD_BUTTON id ) const	{
 										if( m_Duration[id] >= JP_LONG_PRESS )
 											return true;
 										return false;
@@ -147,9 +147,9 @@ public:
 	//----- KeyCode Map methods -----
 	void	SetDefaultMap();
 	void	MapKey( OIS::KeyCode kc, eJOYPAD_BUTTON b );
-	bool	Exist( OIS::KeyCode id );					// Returns true if the given KeyCode is mapped.
-	int		SearchKeyCode( eJOYPAD_BUTTON b );			// Returns the KeyCode assigned to the joypad button. Returns -1 if nonexistent.
-	int		GetJoypadButton( OIS::KeyCode kc )		{ return m_KeyMap[kc]; }
+	bool	Exist( OIS::KeyCode id ) const;					// Returns true if the given KeyCode is mapped.
+	int		SearchKeyCode( eJOYPAD_BUTTON b ) const;			// Returns the KeyCode assigned to the joypad button. Returns -1 if nonexistent.
+	int		GetJoypadButton( OIS::KeyCode kc ) const		{ return m_KeyMap.at(kc); }
 	//----- Setter methods -----
 	void	KeyDown( OIS::KeyCode id, float secs =0 );
 	void	KeyUp( OIS::KeyCode id )	{

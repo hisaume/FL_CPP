@@ -31,7 +31,7 @@
 
 
 // Print the script string to the standard output stream
-void print( std::string &msg);
+void print( const std::string &msg);
 
 /*----------------------------------------------------------------------
 |-|
@@ -82,12 +82,12 @@ public:
 	*/
 	void Reset()	{ _TerminateScriptContext(m_ScriptContext); DiscardModule(FLSCRIPT_DEFAULT_MODULE_NAME); }
 
-	int		DiscardModule( std::string s )			{ return m_ScriptEngine->DiscardModule(s.c_str()); }
+	int		DiscardModule( const std::string& s )			{ return m_ScriptEngine->DiscardModule(s.c_str()); }
 	// Standard compile test. Used by tools to check grammer/symantics to inform the script writer of errors.
-	bool	CheckScript( std::string filename );
+	bool	CheckScript( const std::string& filename );
 	/*	Standard call to load and compile a script file in 1 visit.
 		@Returns 1 if success. */
-	int		LoadAndCompile( std::string filename, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME )
+	int		LoadAndCompile( const std::string& filename, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME )
 													{
 														if( LoadScript(filename,module_name)<0 )	return -1;
 														if( !Compile() )	return -1;
@@ -98,7 +98,7 @@ public:
 		These 2 methods are tied with m_ScriptBuilder, so alteration to the builder in between is troublesome.
 	*/
 	// Loads a script, but does not compile. Call Compile() immediately after, unless for error checks.
-	int		LoadScript( std::string filename, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
+	int		LoadScript( const std::string& filename, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
 	// Compiles what's been loaded immediately before. Call LoadScript to actually load a script.
 	bool	Compile();
 
@@ -113,16 +113,16 @@ public:
 		For running multiple scripts at once, both must be given by the caller to differentiate between the scripts.
 	*/
 	// Primary access to running a 'callback' function with no parameter in the script. Returns 1 if success, less if not.
-	int		RunSCRIPT( const char *function_name, asIScriptContext **context =NULL, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
+	int		RunSCRIPT( const char *function_name, asIScriptContext **context =NULL, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
 	// Run a function of the name 'function_name' with an integer parameter arg1
-	int		RunSCRIPT_Int( const char *function_name, int arg1, asIScriptContext **context =NULL, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
+	int		RunSCRIPT_Int( const char *function_name, int arg1, asIScriptContext **context =NULL, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
 	// Run a function of the name 'function_name' with 2 integer parameters arg1 and arg2
-	int		RunSCRIPT_IntInt( const char *function_name, int arg1, int arg2, asIScriptContext **context =NULL, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
+	int		RunSCRIPT_IntInt( const char *function_name, int arg1, int arg2, asIScriptContext **context =NULL, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
 	// Run a function of the name 'function_name' with 1 integer and 3 strings
-	int		RunSCRIPT_IntStringStringString( const char *function_name, int arg1, std::wstring *argStr, asIScriptContext **context =NULL, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
+	int		RunSCRIPT_IntStringStringString( const char *function_name, int arg1, std::wstring *argStr, asIScriptContext **context =NULL, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
 	// Run a function of the name 'function_name' with 2 integers and 3 strings
-	int		RunSCRIPT_IntIntStringStringString( const char *function_name, int arg1, int arg2, std::wstring *argStr, asIScriptContext **context =NULL, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
-	int		RunSCRIPT_StringStringStringString( const char *function_name, std::string *argStr, asIScriptContext **context =NULL, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
+	int		RunSCRIPT_IntIntStringStringString( const char *function_name, int arg1, int arg2, std::wstring *argStr, asIScriptContext **context =NULL, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
+	int		RunSCRIPT_StringStringStringString( const char *function_name, std::string *argStr, asIScriptContext **context =NULL, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME );
 	// Runs main() from the primary script context, which is typical of most programs. Returns 0 or less if error.
 	int		RunMain()		{	return RunSCRIPT( "void main()" );	}
 
@@ -132,12 +132,12 @@ protected:
 	// Callback for context execution
 	bool	_SetLineCallback( asIScriptContext *ctx, DWORD *timeOut );
 	// Returns less than 0 if the function_name is not found in the script
-	int		GetFunctionID( const std::string function_name, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME )
+	int		GetFunctionID( const std::string& function_name, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME )
 			{
 				asIScriptModule *mod = m_ScriptEngine->GetModule( module_name.c_str() );
 				return mod->GetFunctionIdByDecl( function_name.c_str() );
 			}
-	int		GetVariableID( std::string var_name, std::string module_name =FLSCRIPT_DEFAULT_MODULE_NAME )
+	int		GetVariableID( const std::string& var_name, const std::string& module_name =FLSCRIPT_DEFAULT_MODULE_NAME )
 			{
 				asIScriptModule *mod = m_ScriptEngine->GetModule( module_name.c_str() );
 				return mod->GetTypeIdByDecl( var_name.c_str() );
@@ -146,7 +146,7 @@ protected:
 	void	RegisterMethods()		{}
 
 	// Prepares m_ScriptContext
-	int		_RunSCRIPT_Prepare( asIScriptContext **context, const char *func_name, std::string module_name );
+	int		_RunSCRIPT_Prepare( asIScriptContext **context, const char *func_name, const std::string& module_name );
 	// Exeuctes m_ScriptContext
 	int		_RunSCRIPT_Execute( asIScriptContext **context );
 	// Forcifully terminates the current context execution

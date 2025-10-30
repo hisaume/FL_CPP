@@ -38,24 +38,18 @@ namespace FL
 
 	Returns file size. char and wchar_t versions provided for filenames.
 ----------------------------------------------------------------------*/
-inline long FL_GetFileSizeC( char *n )
+inline long FL_GetFileSizeC( const char *n )
 {
-	FILE *fp = fopen(n,"rb");
-	if( fp==NULL ) return -1;	// error
-	fseek( fp, 0, SEEK_END );
-	long size = ftell(fp);	//rewind(fp);
-	fclose(fp);
-	return size;
-};
-inline long FL_GetFileSizeW( wchar_t *n )
+	std::ifstream file(n, std::ios::binary | std::ios::ate);
+	if( !file ) return -1;	// error
+	return static_cast<long>(file.tellg());
+}
+inline long FL_GetFileSizeW( const wchar_t *n )
 {
-	FILE *fp = _wfopen(n,L"rb");
-	if( fp==NULL ) return -1;	// error
-	fseek( fp, 0, SEEK_END );
-	long size = ftell(fp);	//rewind(fp);
-	fclose(fp);
-	return size;
-};
+	std::wifstream file(n, std::ios::binary | std::ios::ate);
+	if( !file ) return -1;	// error
+	return static_cast<long>(file.tellg());
+}
 
 /*----------------------------------------------------------------------------
 |-| FL_FileExists_
@@ -65,16 +59,13 @@ inline long FL_GetFileSizeW( wchar_t *n )
 template< class CHAR_TYPE >
 inline bool FL_FileExists_( const CHAR_TYPE *filename )
 {
-	basic_ofstream< CHAR_TYPE > file( filename, ios::_Nocreate );
-	if( file.fail() )
-		return false;
-	file.close();
-	return true;
+	basic_ifstream< CHAR_TYPE > file( filename );
+	return !file.fail();
 }
 inline bool FL_FileExistsC( const char *filename )			{ return FL_FileExists_<char>( filename ); }
 inline bool FL_FileExistsW( const wchar_t *filename )		{ return FL_FileExists_<wchar_t>( filename ); }
-inline bool FL_FileExistsC( std::string &filename )			{ return FL_FileExistsC(filename.c_str()); }
-inline bool FL_FileExistsW( std::wstring &filename )		{ return FL_FileExistsW(filename.c_str()); }
+inline bool FL_FileExistsC( const std::string &filename )			{ return FL_FileExistsC(filename.c_str()); }
+inline bool FL_FileExistsW( const std::wstring &filename )		{ return FL_FileExistsW(filename.c_str()); }
 
 /*-------------------------------------------------------------
 |-| FL_FileWriteString_
@@ -108,6 +99,7 @@ inline bool FL_FileWriteStringC( const char *filename, const char *text, bool ap
 	return FL_FileWriteString_< char >( filename, text, append );
 }
 
+// Windows UTF-16LE support.
 // wchar_t stream io not working for the template, so here is the specific implementation.
 inline bool FL_FileWriteStringW( const wchar_t *filename, const wchar_t *text, bool append =true )
 {
@@ -141,8 +133,9 @@ inline basic_string< CHAR_TYPE > FL_FileReadString_( const CHAR_TYPE *filename )
 
 // char version.
 inline string FL_FileReadStringC( const char *filename )			{ return FL_FileReadString_< char >( filename ); }
-inline string FL_FileReadStringC( std::string &filename )			{ return FL_FileReadStringC(filename.c_str()); }
+inline string FL_FileReadStringC( const std::string &filename )			{ return FL_FileReadStringC(filename.c_str()); }
 
+// Windows UTF-16LE support.
 // wchar_t version. Specific implementation without template.
 inline wstring FL_FileReadStringW( const wchar_t *filename )
 {
@@ -164,11 +157,12 @@ inline wstring FL_FileReadStringW( const wchar_t *filename )
 	return txt;
 	//return FL_FileReadString_< wchar_t >( filename );
 }
-inline wstring FL_FileReadStringW( std::wstring &filename )			{ return FL_FileReadStringW(filename.c_str()); }
-inline wstring FL_FileReadStringW( std::string &filename )			{ return FL_FileReadStringW( ASCII_to_UTF8(filename) ); }
+inline wstring FL_FileReadStringW( const std::wstring &filename )			{ return FL_FileReadStringW(filename.c_str()); }
+inline wstring FL_FileReadStringW( const std::string &filename )			{ return FL_FileReadStringW( ASCII_to_UTF8(filename) ); }
 
 /*-------------------------------------------------------------------------------
-|-|
+|-| flBinaryWrite & flBinaryRead
+
 	Writing (dumping) and reading binary files. Good for storing data in a file.
 	char and wchar (string/wstring) are internally supported.
 
@@ -238,14 +232,16 @@ inline wstring FL_FileReadStringW( std::string &filename )			{ return FL_FileRea
 class flBinaryWrite
 {
 public:
-	flBinaryWrite( const char *n, bool overwrite=false )		{ if(overwrite) m_fp=fopen(n,"w+b"); else m_fp=fopen(n,"a+b"); }
-	flBinaryWrite( const wchar_t *n, bool overwrite=false )		{ if(overwrite) m_fp=_wfopen(n,L"w+b"); else m_fp=_wfopen(n,L"a+b"); }
-	virtual ~flBinaryWrite()									{ fclose(m_fp); }
+	flBinaryWrite( const char *n, bool overwrite=false )		
+		: m_file(n, overwrite ? (std::ios::binary | std::ios::out) : (std::ios::binary | std::ios::out | std::ios::app)) {}
+	flBinaryWrite( const wchar_t *n, bool overwrite=false )		
+		: m_file(n, overwrite ? (std::ios::binary | std::ios::out) : (std::ios::binary | std::ios::out | std::ios::app)) {}
+	virtual ~flBinaryWrite()									{}
 
 	//----- Access methods -----
-	bool	IsOpen()				{ if(m_fp) return true; return false; }
+	bool	IsOpen()				{ return m_file.is_open(); }
 	// Standard call to write binary data to a file.
-	int		Write( const void *data, int size_of )	{	return fwrite( data, size_of, 1, m_fp ); }
+	int		Write( const void *data, int size_of )	{	m_file.write(static_cast<const char*>(data), size_of); return m_file ? 1 : 0; }
 	//----- Helper methods using default Write() -----
 	int		Write( const int *data )			{	return Write( data, sizeof(int) );		}
 	int		Write( const char *data )			{	return Write( data, sizeof(char) );		}
@@ -259,39 +255,43 @@ public:
 	int		WriteStrRPG( const wstring &s )	{	int len=s.length(); Write( &len ); return Write( s );	}
 
 protected:
-	FILE *m_fp;
+	std::ofstream m_file;
 };
 
 class flBinaryRead
 {
 public:
-	flBinaryRead( const char *n )		{
-		m_fp=fopen(n,"rb"); 
-	}
-	flBinaryRead( const wchar_t *n )	{ m_fp=_wfopen(n,L"rb"); }
-	virtual ~flBinaryRead()				{ fclose(m_fp); }
+	flBinaryRead( const char *n )		
+		: m_file(n, std::ios::binary | std::ios::in) {}
+	flBinaryRead( const wchar_t *n )	
+		: m_file(n, std::ios::binary | std::ios::in) {}
+	virtual ~flBinaryRead()				{}
 
 	//----- Access methods -----
-	bool	IsOpen()				{ if(m_fp==NULL) return false; return true; }
+	bool	IsOpen()				{ return m_file.is_open(); }
 	// Standard call to read binary data to a file.
-	int		Read( void *p, int size_of )			{	return fread( p, size_of, 1, m_fp ); }
+	int		Read( void *p, int size_of )			{	m_file.read(static_cast<char*>(p), size_of); return m_file ? 1 : 0; }
 	//----- Helper methods based on default Read().
-	int		Read( string &s, int len )				{	char *c=new char[len]; c[len]=0;
-														int res=Read(c,sizeof(char)*len); s=c; return res;
+	int		Read( string &s, int len )				{	char *c=new char[len+1]; c[len]=0;
+														int res=Read(c,sizeof(char)*len); s=c; delete[] c;
+														return res;
 													}
-	int		Read( wstring &s, int len )				{	wchar_t *c=new wchar_t[len]; c[len]=0;
-														int res=Read(c,sizeof(wchar_t)*len); s=c; return res;
+	int		Read( wstring &s, int len )				{	wchar_t *c=new wchar_t[len+1]; c[len]=0;
+														int res=Read(c,sizeof(wchar_t)*len); s=c; delete[] c;
+														return res;
 													}
 	// Specialized method to read size (32bit long) first, then strings of that length.
 	int		ReadStrRPG( string &s )					{	int len; Read(&len,sizeof(int)); return Read(s,len); }
 	int		ReadStrRPG( wstring &s )				{	int len; Read(&len,sizeof(int)); return Read(s,len); }
 
-public:
-	FILE *m_fp;
+protected:
+	std::ifstream m_file;
 };
 
 /*-----------------------------------------------------------------------------
 |-|	flTextFile
+
+	Windows UTF-16LE support.
 
 	Simple text output feature. It opens/creates a text file and writes a line.
 	It always appends to the file so overwriting never happens.
