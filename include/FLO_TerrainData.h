@@ -24,8 +24,8 @@ class Vector3X : public Vector3
 public:
 	Vector3X() : Vector3(0,0,0)	{}
 
-	virtual Vector3X operator=( Vector3 &v )	{	x=v.x; y=v.y; z=v.z; return *this; }
-	Vector3	GetVector3()	{ return (Vector3)(*this); }
+	virtual Vector3X operator=( const Vector3& v )	{	x=v.x; y=v.y; z=v.z; return *this; }
+	Vector3	GetVector3() const	{ return (Vector3)(*this); }
 };
 
 struct DOTSCENE_NODEDATA
@@ -41,7 +41,7 @@ struct DOTSCENE_NODEDATA
 	int		iCheckFlag;
 
 	DOTSCENE_NODEDATA() : bEventTrigger(false), iCheckFlag(-1)	{}
-	void InsertNODEDATA( DOTSCENE_NODEDATA &d )
+	void InsertNODEDATA( const DOTSCENE_NODEDATA& d )
 	{
 		bEventTrigger=d.bEventTrigger; sMeshFilename=d.sMeshFilename;
 		sRayquery_mask=d.sRayquery_mask;

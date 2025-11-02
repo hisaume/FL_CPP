@@ -51,15 +51,15 @@ class FL_OgreFont
 public:
 	/* size: NOT final font size, but the font size FROM which this font is created.
 		ttf_filename: MUST include path. */
-	FL_OgreFont( String font_nickname, String ttf_filename,
-					bool kana, KANJITYPE kanji_type, Real size=18, int resolution=96, String resource_group ="General" );
+	FL_OgreFont( const String& font_nickname, const String& ttf_filename,
+					bool kana, KANJITYPE kanji_type, Real size=18, int resolution=96, const String& resource_group ="General" );
 
 	String	GetName()							{ return m_FontName; }
 	void SetHeight( Real font_height )			{ m_FontHeight=font_height; }
 	/* Font height and width methods are in screen ratio. Full-length = 1.0f	*/
-	Real GetHeight()							{ return m_FontHeight; }
-	Real FontWidth( Ogre::Font::CodePoint c );
-	Real TextWidth( const DisplayString &txt );
+	Real GetHeight() const						{ return m_FontHeight; }
+	Real FontWidth( Ogre::Font::CodePoint c ) const;
+	Real TextWidth( const DisplayString &txt ) const;
 
 private:
 	FontPtr m_FontHandle;		// font handle given by Ogre

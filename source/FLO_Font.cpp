@@ -2,7 +2,7 @@
 #include <FLO_Font.h>
 
 
-void FLO_LoadCodePointsFromFile( FontPtr font, std::wstring codepoint_file )
+void FLO_LoadCodePointsFromFile( FontPtr font, const std::wstring& codepoint_file )
 {
 	FILE *fp = _wfopen( codepoint_file.c_str(), L"rt,ccs=UTF-16LE" );
 	if( !fp )	assert( 0 ); // file point is NULL.
@@ -23,7 +23,7 @@ void FLO_LoadCodePointsFromFile( FontPtr font, std::wstring codepoint_file )
 		switch( txt[i] )
 		{
 		case L' ':
-		case L'Å@':
+		case L'ÔøΩ@':
 		case '\n':
 		case '\t':
 			continue;
@@ -39,8 +39,8 @@ void FLO_LoadCodePointsFromFile( FontPtr font, std::wstring codepoint_file )
 	FL_OgreFont
 
 ------------------*/
-FL_OgreFont::FL_OgreFont( String font_nickname, String ttf_filename,
-							bool kana, KANJITYPE kanji_type, Real size, int resolution, String resource_group )
+FL_OgreFont::FL_OgreFont( const String& font_nickname, const String& ttf_filename,
+							bool kana, KANJITYPE kanji_type, Real size, int resolution, const String& resource_group )
 {
 	LOG( L"Registering font " ); LOGVAR( ttf_filename ); LOG( L"... " );
 
@@ -88,7 +88,7 @@ FL_OgreFont::FL_OgreFont( String font_nickname, String ttf_filename,
 }
 
 
-Real FL_OgreFont::FontWidth( Ogre::Font::CodePoint c )
+Real FL_OgreFont::FontWidth( Ogre::Font::CodePoint c ) const
 {
 	/*
 		##### HACKED !! 0.74, 75 or 76 ####
@@ -120,7 +120,7 @@ Real FL_OgreFont::FontWidth( Ogre::Font::CodePoint c )
 }
 
 
-Real FL_OgreFont::TextWidth( const DisplayString &txt )
+Real FL_OgreFont::TextWidth( const DisplayString &txt ) const
 {
 	Real width = 0, char_width = 0;
 	for( unsigned int i=0; i<txt.length(); ++i ) {

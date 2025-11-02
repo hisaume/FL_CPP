@@ -39,7 +39,7 @@ void OVERLAY_SetBorderPanelProperties( Ogre::BorderPanelOverlayElement *panel )
 /*
 	FLW_Dialog
 */
-FLW_Dialog::FLW_Dialog( std::string sID, Ogre::Overlay *overlayHandle )
+FLW_Dialog::FLW_Dialog( const std::string& sID, Ogre::Overlay *overlayHandle )
 : m_InFocus(true), m_sID(sID) ,m_ChildDialog(NULL)
 {
 	OverlayManager& om = OverlayManager::getSingleton();
@@ -186,7 +186,7 @@ FLW_RESULT FLW_Dialog::Input_PressedOnce( eJOYPAD_BUTTON button )
 /*
 	Wallpaper Dialog
 */
-FLW_WallpaperDialog::FLW_WallpaperDialog( string sID, Ogre::Overlay *overlayHandle )
+FLW_WallpaperDialog::FLW_WallpaperDialog( const string& sID, Ogre::Overlay *overlayHandle )
 : FLW_Dialog( sID, overlayHandle )
 {
 	m_WallpaperElementName = sID + "_WallpaperArea";
@@ -198,7 +198,7 @@ FLW_WallpaperDialog::~FLW_WallpaperDialog()
 {
 }
 
-void FLW_WallpaperDialog::SetWallpaper( String materialName )
+void FLW_WallpaperDialog::SetWallpaper( const String& materialName )
 {
 	m_Elements[m_WallpaperElementName]->SetMaterial( materialName );
 }
@@ -213,7 +213,7 @@ void FLW_WallpaperDialog::SetDimension( Ogre::Real width, Ogre::Real height )
 /*
 	Bordered Dialog
 */
-FLW_BorderedDialog::FLW_BorderedDialog( string sID, Ogre::Overlay *overlayHandle, Real borderSize )
+FLW_BorderedDialog::FLW_BorderedDialog( const string& sID, Ogre::Overlay *overlayHandle, Real borderSize )
 : FLW_Dialog( sID, overlayHandle ), m_BorderSize(borderSize)
 {
 	m_BorderElementName = sID + "_BorderArea";

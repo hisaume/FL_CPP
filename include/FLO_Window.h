@@ -52,7 +52,7 @@ struct FLW_RESULT
 	string id;					// sender name
 	//std::string actionID;		// what happened
 	FLW_RESULT()					{ Init(); }
-	FLW_RESULT( string sid )		{ Init(); id = sid; }
+	FLW_RESULT( const string& sid )		{ Init(); id = sid; }
 	void Init()						{ i=0; f=0.0f; }
 };
 
@@ -88,7 +88,7 @@ class FLWE_Interface;	// Forward declaration
 class FLW_Dialog
 {
 public:
-	FLW_Dialog( std::string sID, Ogre::Overlay *overlayHandle );
+	FLW_Dialog( const std::string& sID, Ogre::Overlay *overlayHandle );
 	virtual ~FLW_Dialog();
 	virtual void SetPosition( Real left, Real top );
 	virtual void SetDimension( Real width, Real height );
@@ -104,7 +104,7 @@ public:
 	virtual Real GetTop()									{ return m_OverlayContainer->getTop(); }
 	virtual Real GetWidth()									{ return m_OverlayContainer->getWidth(); }
 	virtual Real GetHeight()								{ return m_OverlayContainer->getHeight(); }
-	string	GetID()											{ return m_sID; }
+	string	GetID() const									{ return m_sID; }
 	bool	IsShown();
 	void	Show( bool b =true );
 	bool	IsInFocus()										{ return m_InFocus; }
@@ -131,10 +131,10 @@ protected:
 class FLW_WallpaperDialog : public FLW_Dialog
 {
 public:
-	FLW_WallpaperDialog( string sID, Ogre::Overlay *overlayHandle );
+	FLW_WallpaperDialog( const string& sID, Ogre::Overlay *overlayHandle );
 	~FLW_WallpaperDialog();
 	void SetDimension( Real width, Real height );
-	void SetWallpaper( String materialName );
+	void SetWallpaper( const String& materialName );
 protected:
 	string		m_WallpaperElementName;
 };
@@ -142,7 +142,7 @@ protected:
 class FLW_BorderedDialog : public FLW_Dialog
 {
 public:
-	FLW_BorderedDialog( string sID, Ogre::Overlay *overlayHandle, Real borderSize =0.02f );
+	FLW_BorderedDialog( const string& sID, Ogre::Overlay *overlayHandle, Real borderSize =0.02f );
 	~FLW_BorderedDialog();
 	void SetDimension( Real width, Real height );
 	Real GetBorderSize_Sides();
@@ -159,10 +159,10 @@ private:
 class FLW_BorderedSingleTextDialog : public FLW_BorderedDialog
 {
 public:
-	FLW_BorderedSingleTextDialog( string sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
+	FLW_BorderedSingleTextDialog( const string& sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
 									Real borderSize =0.02f, Real leftPad =0.03f, Real rightPad =0.03f,
 															Real topPad =0.0f, Real bottomPad =0.0f );
-	void SetText( wstring txt );
+	void SetText( const wstring& txt );
 	FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 protected:
 	Real	m_LeftPadding, m_RightPadding, m_TopPadding, m_BottomPadding;
@@ -176,14 +176,14 @@ protected:
 class FLW_WallpaperedTextDialog : public FLW_WallpaperDialog
 {
 public:
-	FLW_WallpaperedTextDialog( string sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
+	FLW_WallpaperedTextDialog( const string& sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
 								Real paddingAroundText =0 );
 	~FLW_WallpaperedTextDialog();
 	//virtual void Loop( Real timeSinceLastFrame );
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 	virtual void SetDimension( Real width, Real height );
 	//virtual void Input_PressedOnce( eJOYPAD_BUTTON button );
-	void SetText( wstring txt );
+	void SetText( const wstring& txt );
 	void SetTimeInterval( Real ti );
 protected:
 	Real		m_PaddingAroundText;
@@ -196,14 +196,14 @@ protected:
 class FLW_BorderedTextDialog : public FLW_BorderedDialog
 {
 public:
-	FLW_BorderedTextDialog( string sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
+	FLW_BorderedTextDialog( const string& sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
 							Real borderSize =0.02f, Real leftPad =0.03f, Real rightPad =0.03f );
 	~FLW_BorderedTextDialog();
 	//virtual void Loop( Real timeSinceLastFrame );
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 	virtual void SetDimension( Real width, Real height );
 	//virtual void Input_PressedOnce( eJOYPAD_BUTTON button );
-	void SetText( wstring txt );
+	void SetText( const wstring& txt );
 	void SetTimeInterval( Real ti );
 	Real GetTimeInterval();
 	bool HasTextPushEnded();
@@ -220,7 +220,7 @@ protected:
 class FLW_BorderedMenuDialog : public FLW_BorderedDialog
 {
 public:
-	FLW_BorderedMenuDialog( string sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
+	FLW_BorderedMenuDialog( const string& sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
 							int rows, int columns,
 							Real borderSize =0.02f, Real leftPad =0.019f, Real rightPad =0.015f );
 	~FLW_BorderedMenuDialog();
@@ -248,8 +248,8 @@ public:
 	/* Convenience method to call ResizeColumnsToWidestText() followed by FitBorderToTextAreaH(). */
 	void FitBorderToWidestTextH();
 	/* Sets text at the specified index. @note Call FitBorderToTextAreaH() to adjust border to the new width. */
-	void SetText( wstring txt, int idx );
-	wstring GetText( int idx );
+	void SetText( const wstring& txt, int idx );
+	wstring GetText( int idx ) const;
 	Real GetLeft_CursorPanel();
 	Real GetTop_CursorPanel();
 	int GetCursorPosition();
@@ -273,7 +273,7 @@ protected:
 class FLW_BorderedVerticalListDialog : public FLW_BorderedDialog
 {
 public:
-	FLW_BorderedVerticalListDialog( string sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
+	FLW_BorderedVerticalListDialog( const string& sID, Ogre::Overlay *overlayHandle, FL_OgreFont *fontHandle,
 									int visibleRows, int visibleColumns,
 									Real borderSize =0.02f, Real leftPad =0.04f, Real rightPad =0.0f );
 	~FLW_BorderedVerticalListDialog();
@@ -332,7 +332,7 @@ protected:
 class FLWE_Interface
 {
 public:
-	FLWE_Interface( std::string sid, Ogre::OverlayContainer *oc )
+	FLWE_Interface( const std::string& sid, Ogre::OverlayContainer *oc )
 						: m_sID(sid), m_AcceptInput(true)	{}
 	virtual ~FLWE_Interface();
 	/* Updating content & returning result if necessary. */
@@ -341,7 +341,7 @@ public:
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 	virtual void SetPosition( Real left, Real top )			{}
 	virtual void SetDimension( Real width, Real height )	{}
-	virtual void SetMaterial( String materialName )			{}
+	virtual void SetMaterial( const String& materialName )	{}
 	//virtual void SetZOrder( unsigned short z )				{}
 public:
 	std::string								m_sID;
@@ -355,7 +355,7 @@ public:
 class FLWE_Panel : public FLWE_Interface
 {
 public:
-	FLWE_Panel( std::string sID, Ogre::OverlayContainer *overlayHandle );
+	FLWE_Panel( const std::string& sID, Ogre::OverlayContainer *overlayHandle );
 	~FLWE_Panel();
 	//virtual void Loop( std::map<string,FLW_RESULT> *resultStack, Real timeSinceLastFrame );
 	virtual void SetPosition( Real left, Real top )			{	m_PanelElement->setPosition(left,top); }
@@ -364,7 +364,7 @@ public:
 													{	if( width>0 ) m_PanelElement->setWidth(width);
 														if( height>0 ) m_PanelElement->setHeight(height);
 													}
-	virtual void SetMaterial( String materialName )			{	m_PanelElement->setMaterialName(materialName); }
+	virtual void SetMaterial( const String& materialName )	{	m_PanelElement->setMaterialName(materialName); }
 
 protected:
 	Ogre::PanelOverlayElement	*m_PanelElement;
@@ -377,7 +377,7 @@ protected:
 class FLWE_Border : public FLWE_Interface
 {
 public:
-	FLWE_Border( string sID, Ogre::OverlayContainer *oc, Real borderSize_topAndBottom =0.01f );
+	FLWE_Border( const string& sID, Ogre::OverlayContainer *oc, Real borderSize_topAndBottom =0.01f );
 	~FLWE_Border();
 	virtual void SetPosition( Real left, Real top )			{	m_BorderElement->setPosition(left,top); }
 	/* Set width or height to -1 to retain the same size. */
@@ -399,7 +399,7 @@ protected:
 class FLWE_TextArea : public FLWE_Interface
 {
 public:
-	FLWE_TextArea( std::string sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle );
+	FLWE_TextArea( const std::string& sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle );
 	~FLWE_TextArea();
 	//virtual FLW_RESULT Loop( std::map<string,FLW_RESULT> *resultStack, Real timeSinceLastFrame );
 	virtual void SetPosition( Real left, Real top )			{	m_TextArea->setPosition(left,top); }
@@ -407,7 +407,7 @@ public:
 													{	if( width>0 ) m_TextArea->setWidth(width);
 														if( height>0 ) m_TextArea->setHeight(height);
 													}
-	void SetText( wstring txt )						{	m_TextArea->setCaption( txt );
+	void SetText( const wstring& txt )				{	m_TextArea->setCaption( txt );
 														m_TextArea->setWidth(m_FontHandle->TextWidth(txt));
 													}
 	Real GetWidth()									{	return m_TextArea->getWidth(); }
@@ -436,7 +436,7 @@ class FLWE_MultiLineTextArea : public FLWE_Interface
 {
 public:
 	/* UP TO 'maxLines' # of text lines will be used in this area.	*/
-	FLWE_MultiLineTextArea( std::string sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle,
+	FLWE_MultiLineTextArea( const std::string& sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle,
 							int maxLines =1, Real lineSpacing =0.0f );
 	~FLWE_MultiLineTextArea();
 	virtual FLW_RESULT Loop( std::map<string,FLW_RESULT> *resultStack, Real timeSinceLastFrame );
@@ -444,7 +444,7 @@ public:
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 	virtual void SetPosition( Real left, Real top );
 	virtual void SetDimension( Real width, Real height );
-	void SetText( wstring txt );
+	void SetText( const wstring& txt );
 	void ClearText();
 	void SetTimeInterval( Real ti )			{	m_Interval=ti; }
 	Real GetTimeInterval()					{	return m_Interval; }
@@ -496,7 +496,7 @@ class FLWE_MatrixTextArea : public FLWE_Interface
 {
 	//const int _PaddingLeft = 
 public:
-	FLWE_MatrixTextArea( std::string sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle,
+	FLWE_MatrixTextArea( const std::string& sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle,
 							int rows =1, int columns =1, Real lineSpacingH =0.04f, Real lineSpacingV =0.0f );
 	~FLWE_MatrixTextArea();
 	//virtual FLW_RESULT Loop( std::map<string,FLW_RESULT> *resultStack, Real timeSinceLastFrame );
@@ -507,8 +507,8 @@ public:
 		Internally m_OverlayContainer is resized to ensure the correct size, so this method shouldn't be necessary. */
 	virtual void SetDimension( Real width, Real height )	{	m_OverlayContainer->setDimensions( width, height );}
 	/* Sets text for the specified index. Also adjusts cell width internally. */
-	void SetText( wstring txt, int index );
-	wstring GetText( int index );
+	void SetText( const wstring& txt, int index );
+	wstring GetText( int index ) const;
 	/* index: if index is below 0 (such as default value), it recalculate cursor position so that it is placed correctly. */
 	void SetCursorPosition( int index =-1 );
 	int GetCursorPosition()								{	return m_CursorPosition; }
@@ -589,7 +589,7 @@ protected:
 class FLWE_ScrollableMatrixTextArea : public FLWE_MatrixTextArea
 {
 public:
-	FLWE_ScrollableMatrixTextArea( std::string sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle,
+	FLWE_ScrollableMatrixTextArea( const std::string& sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle,
 							int maxRows =1, int maxColumns =1, Real lineSpacingH =0.06f, Real lineSpacingV =0.0f,
 							Real rightPad =0.1f, Real bottomPad =0.05f );
 	~FLWE_ScrollableMatrixTextArea();
@@ -597,9 +597,9 @@ public:
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 	/* @returns the handle to the data table. Call UpdateDataRowSize() after altering data size. */
 	std::deque<wstring>* GetDataTableHandle()			{ return &m_DataTable; }
-	wstring GetDataTableText( int idx )					{ if(idx<(int)m_DataTable.size())return m_DataTable[idx]; return wstring(); }
+	wstring GetDataTableText( int idx ) const			{ if(idx<(int)m_DataTable.size())return m_DataTable[idx]; return wstring(); }
 	/* Pushes 1 string into data table. UpdateDataRowSize() must be called to update the # of rows. */
-	void PushData( wstring txt )						{
+	void PushData( const wstring& txt )					{
 		m_DataTable.push_back(txt);
 		//_UpdateArrowsLocation(); // maybe not the most efficient.
 	}
@@ -671,7 +671,7 @@ protected:
 class FLWE_SpreadSheet : public FLWE_MatrixTextArea
 {
 public:
-	FLWE_SpreadSheet( std::string sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle,
+	FLWE_SpreadSheet( const std::string& sID, Ogre::OverlayContainer *overlayHandle, FL_OgreFont *fontHandle,
 							int maxRows =1, int maxColumns =1, Real lineSpacingH =0.06f, Real lineSpacingV =0.0f,
 							Real rightPad =0.1f, Real bottomPad =0.05f );
 	~FLWE_SpreadSheet();
@@ -679,9 +679,9 @@ public:
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 	/* @returns the handle to the data table. Call UpdateDataRowSize() after altering data size. */
 	std::deque<wstring>* GetDataTableHandle()			{ return &m_DataTable; }
-	wstring GetDataTableText( int idx )					{ if(idx<(int)m_DataTable.size())return m_DataTable[idx]; return wstring(); }
+	wstring GetDataTableText( int idx ) const			{ if(idx<(int)m_DataTable.size())return m_DataTable[idx]; return wstring(); }
 	/* Pushes 1 string into data table. UpdateDataRowSize() must be called to update the # of rows. */
-	void PushData( wstring txt )						{
+	void PushData( const wstring& txt )					{
 		m_DataTable.push_back(txt);
 		//_UpdateArrowsLocation(); // maybe not the most efficient.
 	}

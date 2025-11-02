@@ -44,7 +44,7 @@ namespace Ogre
 		virtual ~DotSceneLoader() {}
 
 		void parseDotScene(const String &SceneName, const String &groupName, FL_SCENEPACK *sp, SceneNode *pAttachNode = NULL, const String &sPrependNode = "");
-		String getProperty(const String &ndNm, const String &prop);
+		String getProperty(const String &ndNm, const String &prop) const;
 
 		// Clears out the vectors storing strings.
 		void destroyVectors();

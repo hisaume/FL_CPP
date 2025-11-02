@@ -9,7 +9,7 @@
 using namespace std;
 
 
-void StringTableLoaderXML::Parse( string filename, map<string,wstring> *stringTableHandle )
+void StringTableLoaderXML::Parse( const string& filename, map<string,wstring> *stringTableHandle )
 {
 	m_StringTableHandle = stringTableHandle;
 
@@ -58,13 +58,13 @@ void StringTableLoaderXML::Parse( string filename, map<string,wstring> *stringTa
 	}
 	LOG( L"[StringTableLoaderXML] Parsing in progress.\n" );
 
-	string version = getAttrib(XMLRoot, "formatVersion", "unknown");
+	const string version = getAttrib(XMLRoot, "formatVersion", "unknown");
 
 	TiXmlElement *pElement;
 
 	// Process the string table
 	pElement = XMLRoot->FirstChildElement( "stringtable" );
-	string author = getAttrib(XMLRoot, "author", "unknown");
+	const string author = getAttrib(XMLRoot, "author", "unknown");
 	while( pElement )
 	{
 		ProcessStringTable( pElement );
@@ -89,8 +89,8 @@ void StringTableLoaderXML::ProcessStringTable( TiXmlElement *XMLRoot )
 
 void StringTableLoaderXML::ProcessStringLine(TiXmlElement *XMLNode)
 {
-	string id = getAttrib(XMLNode, "id");
-	string display = getAttrib(XMLNode, "display");
+	const string id = getAttrib(XMLNode, "id");
+	const string display = getAttrib(XMLNode, "display");
 
 	// record the id-display pair.
 	if( !id.empty() )

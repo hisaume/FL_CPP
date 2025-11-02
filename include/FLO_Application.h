@@ -39,7 +39,7 @@ using namespace Ogre;
 class FL_OgreConfigFile
 {
 public:
-	FL_OgreConfigFile( std::string config_filename )
+	FL_OgreConfigFile( const std::string& config_filename )
 	{	
 		ConfigFile cf;
 		cf.load( config_filename );
@@ -121,8 +121,8 @@ class FL_Application
 	: public WindowEventListener, public FrameListener, public FL_BufferedInput
 {
 public:
-	FL_Application(	std::string ogreCfgNameNoExtension ="graphics",
-					std::string configFilesPath =".\\", std::string logFilePath =".\\" )
+	FL_Application(	const std::string& ogreCfgNameNoExtension ="graphics",
+					const std::string& configFilesPath =".\\", const std::string& logFilePath =".\\" )
 		:	m_MainScene(NULL),	m_Viewport(NULL),	m_bExit(false), m_bTerrainLoaded( false )
 			, m_FontMain(NULL)
 			, m_InputManager(NULL), m_Keyboard(NULL), m_Mouse(NULL), m_Joystick(NULL)
@@ -387,7 +387,7 @@ protected:
 
 protected:
 	// LoadScene("") will load default scene manager with nothing in it.
-	virtual bool LoadScene( std::string dotscene_file )
+	virtual bool LoadScene( const std::string& dotscene_file )
 	{
 		assert( m_MainScene==NULL );
 

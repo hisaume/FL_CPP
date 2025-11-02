@@ -38,7 +38,7 @@ public:
 	{}
 	virtual ~StringTableLoaderXML() {}
 
-	void Parse( std::string filename, std::map<string,wstring> *stringTableHandle );
+	void Parse( const std::string& filename, std::map<string,wstring> *stringTableHandle );
 
 protected:
 	void ProcessStringTable( TiXmlElement *XMLRoot );

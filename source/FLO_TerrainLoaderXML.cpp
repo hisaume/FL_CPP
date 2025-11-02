@@ -1341,13 +1341,13 @@ ColourValue DotSceneLoader::parseColour(TiXmlElement *XMLNode)
 	);
 }
 
-String DotSceneLoader::getProperty(const String &ndNm, const String &prop)
+String DotSceneLoader::getProperty(const String &ndNm, const String &prop) const
 {
-	for ( unsigned int i = 0 ; i < nodeProperties.size(); i++ )
+	for ( const auto& property : nodeProperties )
 	{
-		if ( nodeProperties[i].nodeName == ndNm && nodeProperties[i].propertyNm == prop )
+		if ( property.nodeName == ndNm && property.propertyNm == prop )
 		{
-			return nodeProperties[i].valueName;
+			return property.valueName;
 		}
 	}
 

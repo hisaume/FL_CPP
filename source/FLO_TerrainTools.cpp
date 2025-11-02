@@ -16,7 +16,7 @@ void CreateEmptyScene( FL_SCENEPACK *sp )
 }
 
 
-void CreateScene_DotScene( FL_SCENEPACK *sp ,string dotscene_file )
+void CreateScene_DotScene( FL_SCENEPACK *sp ,const string& dotscene_file )
 {
 	LOG( L"Creating scene manager with terrain... " );
 
