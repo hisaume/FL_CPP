@@ -98,7 +98,7 @@ void RPG_Database::TEST_LoadHardcoded()
 	}*/
 }
 
-void RPG_Database::LoadXML( string xmlfile )
+void RPG_Database::LoadXML( const string& xmlfile )
 {
 	DataLoaderXML loader;
 	loader.Parse( xmlfile, &Item, &Spell, &Class, &Bagtype );
@@ -133,8 +133,11 @@ void RPG_Database::LoadXML( string xmlfile )
 	}
 }
 
-bool RPG_Database::IsEquipment( string item_id )
+bool RPG_Database::IsEquipment( const string& item_id )
 {
+	if( Item.find( item_id ) == Item.end() )
+		return false;	// item not found.
+
 	switch( Item[item_id].item_type )
 	{
 	case RPG_ITEM::TYPE_SIZE:	// <--- this shouldn't be necessary.

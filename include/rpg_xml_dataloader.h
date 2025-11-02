@@ -24,7 +24,7 @@ public:
 	DataLoaderXML()				{}
 	virtual ~DataLoaderXML()	{}
 
-	void Parse( std::string filename, std::map<string,RPG_ITEM> *_item
+	void Parse( const std::string& filename, std::map<string,RPG_ITEM> *_item
 									, std::map<string,RPG_SPELL> *_spell
 									, std::map<string,RPG_CLASS_DEFINITION>	*_class
 									, std::map<string,RPG_BAGTYPE> *_bagtype );

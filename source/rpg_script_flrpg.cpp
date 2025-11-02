@@ -43,7 +43,7 @@ int		g_Script_SYSTEM = 0;
 int		g_Script_ANSWER = 0;
 string	g_Script_LANGUAGE;		// user chosen language. Script looks this up via 'LANGUAGE' variable.
 
-void FL_ScriptSetLanguage( string lang )	{	g_Script_LANGUAGE = lang;	}
+void FL_ScriptSetLanguage( const string& lang )	{	g_Script_LANGUAGE = lang;	}
 
 /*-----------------------------------------------------------------------------------------------
 |-|	FL_ScriptFLRPG
@@ -916,7 +916,7 @@ int FL_ScriptFLRPG::RUN_CALLBACK_InitializeResources()
 	return RunSCRIPT( SCRIPT_STORY_FUNC[0] );
 }
 
-int FL_ScriptFLRPG::RUN_CALLBACK_Main( string s1, string s2, string s3, string s4 )
+int FL_ScriptFLRPG::RUN_CALLBACK_Main( const string& s1, const string& s2, const string& s3, const string& s4 )
 {
 	string str_stack[4];
 	str_stack[0] = s1;

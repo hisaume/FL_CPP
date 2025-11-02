@@ -66,7 +66,7 @@ bool RPG_INVENTORY::GetSlotIterator( int index, std::list<RPG_INVENTORYSLOT>::it
 	return true;
 }
 
-void RPG_INVENTORY::AddBagType( string bagtype_id, int size )
+void RPG_INVENTORY::AddBagType( const string& bagtype_id, int size )
 {
 	bag_type.push_back( bagtype_id );
 	max_size += size;
@@ -103,7 +103,7 @@ RPG_INVENTORYSLOT* RPG_INVENTORY::GetFirstEmptySlot()
 		RPG_SPELLBOOK
 
 -----------------------------*/
-bool RPG_SPELLBOOK::Learn( string spell_id, SPELLBOOK_ELEMENT *init )
+bool RPG_SPELLBOOK::Learn( const string& spell_id, SPELLBOOK_ELEMENT *init )
 {
 	if( nullptr == GetState_Learned(spell_id) ) {
 		if( init )
@@ -115,7 +115,7 @@ bool RPG_SPELLBOOK::Learn( string spell_id, SPELLBOOK_ELEMENT *init )
 	return false;	// spell already exists.
 }
 
-bool RPG_SPELLBOOK::Unlearn( string spell_id )
+bool RPG_SPELLBOOK::Unlearn( const string& spell_id )
 {
 	for( auto iter=learned_list.begin(); iter!=learned_list.end(); ++iter )
 		if( iter->first == spell_id ) {
@@ -125,7 +125,7 @@ bool RPG_SPELLBOOK::Unlearn( string spell_id )
 	return false;
 }
 
-bool RPG_SPELLBOOK::Memorize( string spell_id )
+bool RPG_SPELLBOOK::Memorize( const string& spell_id )
 {
 	for( auto iter=learned_list.begin(); iter!=learned_list.end(); ++iter )
 		if( iter->first == spell_id ) {
@@ -137,7 +137,7 @@ bool RPG_SPELLBOOK::Memorize( string spell_id )
 	return false;
 }
 
-bool RPG_SPELLBOOK::Unmemorize( string spell_id )
+bool RPG_SPELLBOOK::Unmemorize( const string& spell_id )
 {
 	for( auto iter=memorized_list.begin(); iter!=memorized_list.end(); ++iter )
 		if( iter->first == spell_id ) {
@@ -149,7 +149,7 @@ bool RPG_SPELLBOOK::Unmemorize( string spell_id )
 	return false;
 }
 
-SPELLBOOK_ELEMENT* RPG_SPELLBOOK::GetState( string spell_id )							
+SPELLBOOK_ELEMENT* RPG_SPELLBOOK::GetState( const string& spell_id )							
 {
 	SPELLBOOK_ELEMENT *state;
 	if( state=GetState_Memorized(spell_id) )
@@ -159,7 +159,7 @@ SPELLBOOK_ELEMENT* RPG_SPELLBOOK::GetState( string spell_id )
 	return nullptr;
 }
 
-SPELLBOOK_ELEMENT* RPG_SPELLBOOK::GetState_Learned( string spell_id )
+SPELLBOOK_ELEMENT* RPG_SPELLBOOK::GetState_Learned( const string& spell_id )
 {
 	for( auto iter=learned_list.begin(); iter!=learned_list.end(); ++iter )
 		if( iter->first == spell_id )
@@ -167,7 +167,7 @@ SPELLBOOK_ELEMENT* RPG_SPELLBOOK::GetState_Learned( string spell_id )
 	return nullptr;
 }
 
-SPELLBOOK_ELEMENT* RPG_SPELLBOOK::GetState_Memorized( string spell_id )
+SPELLBOOK_ELEMENT* RPG_SPELLBOOK::GetState_Memorized( const string& spell_id )
 {
 	for( auto iter=memorized_list.begin(); iter!=memorized_list.end(); ++iter )
 		if( iter->first == spell_id )

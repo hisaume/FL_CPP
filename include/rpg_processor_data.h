@@ -34,14 +34,14 @@ namespace PROCESS
 		@Remark Call this method repeatedly with remaining quantity for complete
 		insertion, though if false is returned the inventory is full up.
 		@Returns false if there is no more slots left in the inventory.		*/
-	bool Inventory_ItemIn( RPG_INVENTORY &inventory, string item_id, int& quantity, int stack_size_override =0 );
+	bool Inventory_ItemIn( RPG_INVENTORY &inventory, const string& item_id, int& quantity, int stack_size_override =0 );
 	/* Specialized case of Inventory_ItemIn, where 'quantity' is only 1.
 		@Return false if the given item did not go into the inventory.	*/
-	bool Inventory_ItemIn_Q1( RPG_INVENTORY &inventory, string item_id, int stack_size_override );
-	bool Inventory_ItemIn_Q1( RPG_INVENTORY &inventory, string item_id );
+	bool Inventory_ItemIn_Q1( RPG_INVENTORY &inventory, const string& item_id, int stack_size_override );
+	bool Inventory_ItemIn_Q1( RPG_INVENTORY &inventory, const string& item_id );
 	/* Takes 1 of item_id off the inventory. Stack management is done automatically.
 		@Returns false if item_id was not found.	*/
-	bool Inventory_ItemOut( RPG_INVENTORY &inventory, string item_id );
+	bool Inventory_ItemOut( RPG_INVENTORY &inventory, const string& item_id );
 	/* Process where index2 is cast over index 1. Think FF where 1st choice item (index1) is put over
 		2nd choice item (index2).
 		@Remark If the contained items are the same for both indices, a merger takes place. Index2 will be
@@ -65,7 +65,7 @@ namespace PROCESS
 		set true for unified party equipment inventory or
 		false to use the life object's personal inventory (usually for NPCs).
 	*/
-	bool LIFE_Equip( LIFE_OBJECT *life_obj, string item_id, bool _party_inventory =true );
+	bool LIFE_Equip( LIFE_OBJECT *life_obj, const string& item_id, bool _party_inventory =true );
 	/* Equips an item FROM a particular slot of an inventory. Which equipment slot
 		(of the given character) it should go into is worked out internally.
 		'_party_inventory' determines which inventory is to be used;

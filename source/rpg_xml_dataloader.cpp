@@ -8,7 +8,7 @@
 using namespace std;
 
 
-void DataLoaderXML::Parse( std::string filename, std::map<string,RPG_ITEM> *_item
+void DataLoaderXML::Parse( const std::string& filename, std::map<string,RPG_ITEM> *_item
 												, std::map<string,RPG_SPELL> *_spell
 												, std::map<string,RPG_CLASS_DEFINITION>	*_class
 												, std::map<string,RPG_BAGTYPE> *_bagtype )

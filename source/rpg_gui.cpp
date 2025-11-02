@@ -93,7 +93,7 @@ FLW_RESULT RPGD_PlayerMenu::Input_PressedOnce( eJOYPAD_BUTTON button )
 /*---------------------
 	RPGD_NameList
 ---------------------*/
-RPGD_NameList::RPGD_NameList( string id, std::deque<string> *name_list, bool show_AllEntry )
+RPGD_NameList::RPGD_NameList( const string& id, std::deque<string> *name_list, bool show_AllEntry )
 	: FLW_BorderedMenuDialog( id+"_NameList", NULL, NULL, name_list->size()+(show_AllEntry?1:0), 1 )
 	, m_bAllEntry(show_AllEntry), m_NameList( *name_list )
 {
@@ -132,7 +132,7 @@ FLW_RESULT RPGD_NameList::Input_PressedOnce( eJOYPAD_BUTTON button )
 /*----------------------------------
 	RPGD_InventoryActionDialog
 ----------------------------------*/
-RPGD_InventoryActionDialog::RPGD_InventoryActionDialog( string id, std::deque<string> *name_list )
+RPGD_InventoryActionDialog::RPGD_InventoryActionDialog( const string& id, std::deque<string> *name_list )
 	: FLW_BorderedMenuDialog( id+"_InventoryAction", NULL, NULL, 3, 1 )
 	, m_NameList( *name_list )
 	, m_InventoryAction_Give( nullptr )
@@ -205,7 +205,7 @@ FLW_RESULT RPGD_InventoryActionDialog::Input_PressedOnce( eJOYPAD_BUTTON button 
 /*------------------------------
 	RPGD_InventoryListDialog
 ------------------------------*/
-RPGD_InventoryListDialog::RPGD_InventoryListDialog( string id, RPG_INVENTORY *inventory,
+RPGD_InventoryListDialog::RPGD_InventoryListDialog( const string& id, RPG_INVENTORY *inventory,
 													std::deque<string> *namelist )
 	: FLW_BorderedMenuDialog( id+"_InventoryList", NULL, NULL, inventory->max_size, 1 )
 	, m_InventoryActionDialog( nullptr ), m_InventoryHandle( inventory )
@@ -291,7 +291,7 @@ void RPGD_InventoryListDialog::SetTextFromInventory()
 /*-------------------------------------
 	RPGD_PartyInventoryListDialog
 -------------------------------------*/
-RPGD_PartyInventoryListDialog::RPGD_PartyInventoryListDialog( string id, RPG_INVENTORY *inventory,
+RPGD_PartyInventoryListDialog::RPGD_PartyInventoryListDialog( const string& id, RPG_INVENTORY *inventory,
 																std::deque<string> *namelist )
 	: FLW_BorderedVerticalListDialog( id+"_PartyInventoryList", NULL, NULL, 8, 2 )
 	, m_InventoryActionDialog( nullptr ), m_InventoryHandle( inventory )
@@ -415,7 +415,7 @@ void RPGD_PartyInventoryListDialog::SetTextFromInventory()
 /*----------------------------------
 	RPGD_EquipmentActionDialog
 ----------------------------------*/
-RPGD_EquipmentActionDialog::RPGD_EquipmentActionDialog( string id )
+RPGD_EquipmentActionDialog::RPGD_EquipmentActionDialog( const string& id )
 	: FLW_BorderedMenuDialog( id, NULL, NULL, 2, 1 )
 {
 	SetText( gStringTable["menu_equipact_soubi"], 0 );
@@ -452,7 +452,7 @@ FLW_RESULT RPGD_EquipmentActionDialog::Input_PressedOnce( eJOYPAD_BUTTON button 
 /*--------------------------------
 	RPGD_EquipmentStatsDialog
 --------------------------------*/
-RPGD_EquipmentStatsDialog::RPGD_EquipmentStatsDialog( string id, string item_id )
+RPGD_EquipmentStatsDialog::RPGD_EquipmentStatsDialog( const string& id, const string& item_id )
 	: FLW_BorderedMenuDialog( id, NULL, NULL, 6, 1 )
 	, m_ItemID( item_id )
 {
@@ -586,7 +586,7 @@ void RPGD_EquipmentStatsDialog::DisplayNothingEquiped()
 /*----------------------------------------
 	RPGD_EquipmentStatsWithDescDialog
 ----------------------------------------*/
-RPGD_EquipmentStatsWithDescDialog::RPGD_EquipmentStatsWithDescDialog( string id, string item_id )
+RPGD_EquipmentStatsWithDescDialog::RPGD_EquipmentStatsWithDescDialog( const string& id, const string& item_id )
 	: RPGD_EquipmentStatsDialog( id, item_id )
 {
 	m_EquipmentDescriptionAreaName = id + "_EquipmentDescArea";
@@ -630,7 +630,7 @@ void RPGD_EquipmentStatsWithDescDialog::FilloutDialog()
 /*--------------------------------
 	RPGD_EquipmentListDialog
 --------------------------------*/
-RPGD_EquipmentListDialog::RPGD_EquipmentListDialog( string id, LIFE_PNP *life_pnp )
+RPGD_EquipmentListDialog::RPGD_EquipmentListDialog( const string& id, LIFE_PNP *life_pnp )
 	: FLW_BorderedMenuDialog( id, NULL, NULL, RPG_EQUIPSLOTS::SLOT_SIZE, 1, 0.02f, 0.133f, 0.05f )
 	, m_LifePNP( life_pnp ), m_ChosenSlot(RPG_EQUIPSLOTS::RHAND)
 	, m_PartyEquipmentBagDialog( nullptr )
@@ -854,7 +854,7 @@ void RPGD_EquipmentListDialog::ShowCursor( bool show )
 	FLW_BorderedMenuDialog::ShowCursor( show );
 }
 
-void RPGD_EquipmentListDialog::NewStatsDialog( string item_id )
+void RPGD_EquipmentListDialog::NewStatsDialog( const string& item_id )
 {
 	DELETE_NULL( m_StatsWithDescDialog );
 	if( item_id.empty() )
@@ -869,7 +869,7 @@ void RPGD_EquipmentListDialog::NewStatsDialog( string item_id )
 -----------------------------------*/
 std::deque<string> ___ERROR_EVASION_circumvent_namelist___(1,"ERROR_EVASION_circumvent_namelist");
 
-RPGD_PartyEquipmentBagDialog::RPGD_PartyEquipmentBagDialog( string id, std::deque<RPG_EQUIPSLOTS::EQUIPSLOT> *slot_stack )
+RPGD_PartyEquipmentBagDialog::RPGD_PartyEquipmentBagDialog( const string& id, std::deque<RPG_EQUIPSLOTS::EQUIPSLOT> *slot_stack )
 	: RPGD_PartyInventoryListDialog( id, &STATE->inventory_equip, &___ERROR_EVASION_circumvent_namelist___ )
 	, m_bAllowChoice( false ), m_SlotRestricted_SlotStack( slot_stack!=nullptr?*slot_stack:std::deque<RPG_EQUIPSLOTS::EQUIPSLOT>() )
 	, m_StatsDialog( nullptr )
@@ -1076,7 +1076,7 @@ void RPGD_PartyEquipmentBagDialog::SetTextFromInventory()
 	UpdateData();
 }
 
-void RPGD_PartyEquipmentBagDialog::ShowCurrentItemDialog( bool _show, string item_id )
+void RPGD_PartyEquipmentBagDialog::ShowCurrentItemDialog( bool _show, const string& item_id )
 {
 	/*
 		if item_id is empty, it means nothing is equipped for now.
@@ -1100,7 +1100,7 @@ void RPGD_PartyEquipmentBagDialog::ShowChosenItemDialog( bool _show )
 /*---------------------
 	RPGD_PMenu_Item
 ---------------------*/
-RPGD_PMenu_Item::RPGD_PMenu_Item( string id, std::deque<string> *name_list, bool show_AllEntry )
+RPGD_PMenu_Item::RPGD_PMenu_Item( const string& id, std::deque<string> *name_list, bool show_AllEntry )
 	: RPGD_NameList( id+"_PMenu_Item", name_list, show_AllEntry )
 	, m_InventoryListDialog( nullptr ), m_InventoryMode( false ), m_ForceInventoryUpdate( false )
 	, m_PartyInventoryListDialog( nullptr )
@@ -1237,7 +1237,7 @@ FLW_RESULT RPGD_PMenu_Item::Input_PressedOnce( eJOYPAD_BUTTON button )
 	return res;
 }
 
-void RPGD_PMenu_Item::CreateInventoryListDialog( string guid )
+void RPGD_PMenu_Item::CreateInventoryListDialog( const string& guid )
 {
 	LIFE_OBJECT *life = STATE->GetLife( guid );
 	if( nullptr == life ) {
@@ -1273,7 +1273,7 @@ void RPGD_PMenu_Item::DestroyPartyInventoryListDialog()
 /*--------------------------------
 	RPGD_InventoryAction_Give
 --------------------------------*/
-RPGD_InventoryAction_Give::RPGD_InventoryAction_Give( string id, std::deque<string> *name_list )
+RPGD_InventoryAction_Give::RPGD_InventoryAction_Give( const string& id, std::deque<string> *name_list )
 	: RPGD_PMenu_Item( id+"_InventoryActionGive", name_list, true )
 {
 	// EMPTY
@@ -1397,7 +1397,7 @@ FLW_RESULT RPGD_PMenu_Equipment::Input_PressedOnce( eJOYPAD_BUTTON button )
 	return res;
 }
 
-void RPGD_PMenu_Equipment::CreateEquipmentListDialog( string life_guid )
+void RPGD_PMenu_Equipment::CreateEquipmentListDialog( const string& life_guid )
 {
 	m_EquipmentListDialog = new RPGD_EquipmentListDialog( m_sID+"_EquipmentEntry", &STATE->GetLife(life_guid)->pnp );
 	m_EquipmentListDialog->ShowCursor( false );

@@ -16,7 +16,7 @@ RPG_ZONE* RPG_State::CurrentZone()
 	return &z->second;
 }
 
-RPG_ZONE* RPG_State::GetZone( string zone_id )
+RPG_ZONE* RPG_State::GetZone( const string& zone_id )
 {
 	auto z = zonelist.find( current_zone );
 	if( z == zonelist.end() )
@@ -24,7 +24,7 @@ RPG_ZONE* RPG_State::GetZone( string zone_id )
 	return &z->second;
 }
 
-LIFE_OBJECT* RPG_State::GetLife( string guid, bool& _is_party )
+LIFE_OBJECT* RPG_State::GetLife( const string& guid, bool& _is_party )
 {
 	/*	Iterate through all lists.
 		Order:	Party, Current zone, the rest of the zones.		*/
@@ -59,7 +59,7 @@ LIFE_OBJECT* RPG_State::GetLife( string guid, bool& _is_party )
 	return nullptr;
 }
 
-bool RPG_State::DeleteLife( string guid )
+bool RPG_State::DeleteLife( const string& guid )
 {
 	/*	Iterate through all lists then delete if guid is found.
 		Order:	Party, Current zone, the rest of the zones.		*/

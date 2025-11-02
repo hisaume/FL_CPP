@@ -35,7 +35,7 @@
 class RPGD_NameList : public FLW_BorderedMenuDialog //FLW_BorderedVerticalListDialog
 {
 public:
-	RPGD_NameList( string id, std::deque<string> *name_list, bool show_AllEntry );
+	RPGD_NameList( const string& id, std::deque<string> *name_list, bool show_AllEntry );
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 
 protected:
@@ -51,7 +51,7 @@ class RPGD_InventoryAction_Give; // forward declare
 class RPGD_InventoryActionDialog : public FLW_BorderedMenuDialog
 {
 public:
-	RPGD_InventoryActionDialog( string id, std::deque<string> *name_list );
+	RPGD_InventoryActionDialog( const string& id, std::deque<string> *name_list );
 	~RPGD_InventoryActionDialog();
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 protected:
@@ -66,7 +66,7 @@ protected:
 class RPGD_InventoryListDialog : public FLW_BorderedMenuDialog
 {
 public:
-	RPGD_InventoryListDialog( string id, RPG_INVENTORY *inventory, std::deque<string> *namelist );
+	RPGD_InventoryListDialog( const string& id, RPG_INVENTORY *inventory, std::deque<string> *namelist );
 	FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 	void SetTextFromInventory();
 	bool Empty()					{ return m_InventoryHandle->Empty(); }
@@ -80,7 +80,7 @@ protected:
 class RPGD_PartyInventoryListDialog : public FLW_BorderedVerticalListDialog
 {
 public:
-	RPGD_PartyInventoryListDialog( string id, RPG_INVENTORY *inventory, std::deque<string> *namelist );
+	RPGD_PartyInventoryListDialog( const string& id, RPG_INVENTORY *inventory, std::deque<string> *namelist );
 	~RPGD_PartyInventoryListDialog();
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 	virtual void SetTextFromInventory();
@@ -101,7 +101,7 @@ protected:
 class RPGD_EquipmentActionDialog : public FLW_BorderedMenuDialog
 {
 public:
-	RPGD_EquipmentActionDialog( string id );
+	RPGD_EquipmentActionDialog( const string& id );
 	//~RPGD_EquipmentActionDialog();
 	FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 
@@ -119,9 +119,9 @@ protected:
 class RPGD_EquipmentStatsDialog : public FLW_BorderedMenuDialog
 {
 public:
-	RPGD_EquipmentStatsDialog( string id, string item_id );
+	RPGD_EquipmentStatsDialog( const string& id, const string& item_id );
 	virtual void FilloutDialog();
-	virtual void ChangeItemID( string item_id )				{ m_ItemID=item_id; FilloutDialog(); }
+	virtual void ChangeItemID( const string& item_id )		{ m_ItemID=item_id; FilloutDialog(); }
 	void DisplayNothingEquiped();
 
 protected:
@@ -140,7 +140,7 @@ protected:
 class RPGD_EquipmentStatsWithDescDialog : public RPGD_EquipmentStatsDialog
 {
 public:
-	RPGD_EquipmentStatsWithDescDialog( string id, string item_id );
+	RPGD_EquipmentStatsWithDescDialog( const string& id, const string& item_id );
 	//virtual FLW_RESULT Loop( float seconds );
 	virtual void SetDimension( Real width, Real height );
 	virtual void FilloutDialog();
@@ -169,7 +169,7 @@ protected:
 class RPGD_PartyEquipmentBagDialog : public RPGD_PartyInventoryListDialog
 {
 public:
-	RPGD_PartyEquipmentBagDialog( string id, std::deque<RPG_EQUIPSLOTS::EQUIPSLOT> *slot_stack =nullptr );
+	RPGD_PartyEquipmentBagDialog( const string& id, std::deque<RPG_EQUIPSLOTS::EQUIPSLOT> *slot_stack =nullptr );
 	~RPGD_PartyEquipmentBagDialog();
 	virtual FLW_RESULT Loop( Real seconds );
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
@@ -177,7 +177,7 @@ public:
 	virtual void SetPosition( Real left, Real top );
 
 	virtual void SetTextFromInventory();
-	void ShowCurrentItemDialog( bool _show, string item_id =string() );
+	void ShowCurrentItemDialog( bool _show, const string& item_id =string() );
 	void ShowChosenItemDialog( bool _show );
 
 protected:
@@ -201,12 +201,12 @@ protected:
 class RPGD_EquipmentListDialog : public FLW_BorderedMenuDialog
 {
 public:
-	RPGD_EquipmentListDialog( string id, LIFE_PNP *life_pnp );
+	RPGD_EquipmentListDialog( const string& id, LIFE_PNP *life_pnp );
 	~RPGD_EquipmentListDialog();
 	virtual FLW_RESULT Loop( Real seconds );
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 	virtual void ShowCursor( bool show );
-	void NewStatsDialog( string item_id );
+	void NewStatsDialog( const string& item_id );
 
 protected:
 	bool								m_ForceRefreshView;
@@ -229,7 +229,7 @@ protected:
 class RPGD_PMenu_Item : public RPGD_NameList
 {
 public:
-	RPGD_PMenu_Item( string id, std::deque<string> *name_list, bool show_AllEntry );
+	RPGD_PMenu_Item( const string& id, std::deque<string> *name_list, bool show_AllEntry );
 	~RPGD_PMenu_Item();
 	
 	virtual FLW_RESULT Loop( Real secsSinceLastFrame );
@@ -238,7 +238,7 @@ public:
 													if( m_InventoryListDialog )
 														m_InventoryListDialog->SetZOrder(z);
 												}
-	void CreateInventoryListDialog( string life_guid );
+	void CreateInventoryListDialog( const string& life_guid );
 	void DestroyInventoryListDialog();
 	void CreatePartyInventoryListDialog();
 	void DestroyPartyInventoryListDialog();
@@ -265,7 +265,7 @@ protected:
 class RPGD_InventoryAction_Give : public RPGD_PMenu_Item
 {
 public:
-	RPGD_InventoryAction_Give( string id, std::deque<string> *name_list );
+	RPGD_InventoryAction_Give( const string& id, std::deque<string> *name_list );
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );
 };
 
@@ -284,7 +284,7 @@ public:
 	//												if( m_InventoryListDialog )
 		//												m_InventoryListDialog->SetZOrder(z);
 			//									}
-	void CreateEquipmentListDialog( string life_guid );
+	void CreateEquipmentListDialog( const string& life_guid );
 	void DestroyEquipmentListDialog();
 	void CreatePartyEquipmentBagDialog();
 	void DestroyPartyEquipmentBagDialog();

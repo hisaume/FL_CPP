@@ -29,7 +29,7 @@ extern int		g_Script_SYSTEM;
 extern int		g_Script_ANSWER;
 
 // Set language as it is set for the game.
-void			FL_ScriptSetLanguage( string lang );
+void			FL_ScriptSetLanguage( const string& lang );
 
 /*------------------------------------------
 	Event types sent to SCRIPT_Event()
@@ -93,7 +93,7 @@ public:
 	int RUN_CALLBACK_InitializeResources();
 	/*	Runs CALLBACK_Main() in the script file.
 		@Returns 0 if error occured. Non-zero if success.	*/
-	int RUN_CALLBACK_Main( string message, string Zone, string EventPlane, string Interaction );
+	int RUN_CALLBACK_Main( const string& message, const string& Zone, const string& EventPlane, const string& Interaction );
 
 
 	void SuspendZoneEvent()		{ if(m_ZoneEventContext.empty()) return; m_ZoneEventContext.top()->Suspend(); }

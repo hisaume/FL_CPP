@@ -3,7 +3,7 @@
 
 
 
-RPGD_BattleMenu::RPGD_BattleMenu( string id )
+RPGD_BattleMenu::RPGD_BattleMenu( const string& id )
 	: FLW_BorderedMenuDialog( id, NULL, NULL, BMENU_ROWSIZE, 1 )
 	, m_FocusMenuID( BMENU_CENTRE )
 {

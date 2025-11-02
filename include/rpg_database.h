@@ -22,12 +22,12 @@ public:
 	~RPG_Database()		{}
 
 	void TEST_LoadHardcoded();
-	void LoadXML( string xmlfile );
+	void LoadXML( const string& xmlfile );
 
 	/*------------------------------
 		Convenience Access Tools
 	------------------------------*/
-	bool IsEquipment( string item_id );
+	bool IsEquipment( const string& item_id );
 
 public:
 	std::map<string,wstring>				StringTable;

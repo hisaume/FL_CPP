@@ -140,9 +140,9 @@ struct RPG_INVENTORY
 		@RETURN false if index is out of bounds and hence the reference iterator returns unusable. */
 	bool GetSlotIterator( int index, std::list<RPG_INVENTORYSLOT>::iterator &iterator );
 	/* Convenience method to increase content size. */
-	void AddBagType( string bagtype_id, int size );
+	void AddBagType( const string& bagtype_id, int size );
 	/* @RETURN true if bagtype_id already exists in the bag_type stack. */
-	bool BagTypeExists( string bagtype_id )		{ for(auto i=bag_type.begin();i!=bag_type.end();++i) if(*i==bagtype_id) return true; return false; }
+	bool BagTypeExists( const string& bagtype_id ) const	{ for(const auto& i : bag_type) if(i==bagtype_id) return true; return false; }
 	/* @RETURN the number of vacant slots. */
 	int AvailableSize();
 	/* @RETURN true if inventory is empty. */
@@ -198,8 +198,8 @@ struct RPG_ABILITYBOOK
 {
 	std::map<string,RPG_ABILITY>			list;
 
-	RPG_ABILITY* GetUICommand( string ui_com );
-	void GetUICommandList( std::deque<string>& ui_com_list );
+	RPG_ABILITY* GetUICommand( const string& ui_com );
+	void GetUICommandList( std::deque<string>& ui_com_list ) const;
 	//int GetTotalStatsModifier( string stats_element );	*** Put these in Helper? **
 	//float GetTotalStatsMultiplier( string stats_element );
 };
@@ -261,17 +261,17 @@ struct RPG_SPELLBOOK
 	std::map<string,SPELLBOOK_ELEMENT>	learned_list;		// e.g. spell proficiency = spell_list["spell_mera"]
 	std::map<string,SPELLBOOK_ELEMENT>	memorized_list;		// e.g. spell proficiency = spell_list["spell_mera"]
 
-	bool Learn( string spell_id, SPELLBOOK_ELEMENT *init =nullptr );
-	bool Unlearn( string spell_id );
+	bool Learn( const string& spell_id, SPELLBOOK_ELEMENT *init =nullptr );
+	bool Unlearn( const string& spell_id );
 	/* Moves a spell from learned list to memorized list. @RETURN false if spell not found in learned_list. */
-	bool Memorize( string spell_id );
-	bool Unmemorize( string spell_id );
+	bool Memorize( const string& spell_id );
+	bool Unmemorize( const string& spell_id );
 	/* Searches both lists. @RETURNS nullptr if spell is not present. */
-	SPELLBOOK_ELEMENT* GetState( string spell_id );
+	SPELLBOOK_ELEMENT* GetState( const string& spell_id );
 	/* Searches learned list. @RETURN nullptr if spell is not present. */
-	SPELLBOOK_ELEMENT* GetState_Learned( string spell_id );
+	SPELLBOOK_ELEMENT* GetState_Learned( const string& spell_id );
 	/* Searches memorized list. @RETURN nullptr if spell is not present. */
-	SPELLBOOK_ELEMENT* GetState_Memorized( string spell_id );
+	SPELLBOOK_ELEMENT* GetState_Memorized( const string& spell_id );
 };
 /*---------------------------------------------------
 	Class Definition (i.e. Template)

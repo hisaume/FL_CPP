@@ -14,7 +14,7 @@ namespace PROCESS
 		INVENTORY
 
 -------------------------*/
-bool Inventory_ItemIn( RPG_INVENTORY &inventory, string item_id, int& quantity, int stack_size_override )
+bool Inventory_ItemIn( RPG_INVENTORY &inventory, const string& item_id, int& quantity, int stack_size_override )
 {
 	auto &content = inventory.content;
 	auto &max_size = inventory.max_size;
@@ -61,19 +61,19 @@ bool Inventory_ItemIn( RPG_INVENTORY &inventory, string item_id, int& quantity, 
 	return true;
 }
 
-bool Inventory_ItemIn_Q1( RPG_INVENTORY &inventory, string item_id, int stack_size_override )
+bool Inventory_ItemIn_Q1( RPG_INVENTORY &inventory, const string& item_id, int stack_size_override )
 {
 	int i=1;
 	return Inventory_ItemIn( inventory, item_id, i, stack_size_override );
 }
 
-bool Inventory_ItemIn_Q1( RPG_INVENTORY &inventory, string item_id )
+bool Inventory_ItemIn_Q1( RPG_INVENTORY &inventory, const string& item_id )
 {
 	int i=1;
 	return Inventory_ItemIn( inventory, item_id, i, 0 );
 }
 
-bool Inventory_ItemOut( RPG_INVENTORY &inventory, string item_id )
+bool Inventory_ItemOut( RPG_INVENTORY &inventory, const string& item_id )
 {
 	auto &content = inventory.content;
 
@@ -169,7 +169,7 @@ int Inventory_ReduceQuantity( RPG_INVENTORY &inventory, int slot_index, int redu
 		A.I.
 
 -------------------------*/
-bool LIFE_Equip( LIFE_OBJECT *life_obj, string item_id, bool _party_inventory )
+bool LIFE_Equip( LIFE_OBJECT *life_obj, const string& item_id, bool _party_inventory )
 {
 	// Set designated inventory. If not party, individual inventory is used.
 	RPG_INVENTORY *inventory;

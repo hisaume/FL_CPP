@@ -34,7 +34,7 @@
 class RPGD_BattleMenu : public FLW_BorderedMenuDialog
 {
 public:
-	RPGD_BattleMenu( string id );
+	RPGD_BattleMenu( const string& id );
 	~RPGD_BattleMenu();
 	//virtual FLW_RESULT Loop( Real seconds );
 	virtual FLW_RESULT Input_PressedOnce( eJOYPAD_BUTTON button );

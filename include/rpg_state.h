@@ -27,10 +27,10 @@ struct AGGRO_LIST
 	std::list<AGGRO_TARGET>		alist;
 
 	void Clear();
-	void Add( string life_id, int value );
-	void Subtract( string life_id, int value );
-	void PushToTop( string life_id );
-	void Remove( string life_id );
+	void Add( const string& life_id, int value );
+	void Subtract( const string& life_id, int value );
+	void PushToTop( const string& life_id );
+	void Remove( const string& life_id );
 	string GetNth( int rank );
 	string GetFirst();
 };
@@ -84,7 +84,7 @@ struct LIFE_PNP		// life data in pen&paper RPG fashion.
 	void GenerateGUID()		{ guid = class_id + FL::LONG2STRING(factory_id); }
 	/* Convenience method for wear_category member.
 		@return 0 if the given category is not wearable, 1 or above indicates the level of proficiency. */
-	int GetWearProficiency( string category )	{	for( auto iter=wear_category.begin(); iter!=wear_category.end(); ++iter ) if( iter->first == category ) return iter->second; return 0; }
+	int GetWearProficiency( const string& category )	{	for( auto iter=wear_category.begin(); iter!=wear_category.end(); ++iter ) if( iter->first == category ) return iter->second; return 0; }
 };
 
 struct LIFE_ACTION	// action messages
@@ -159,16 +159,16 @@ struct RPG_State
 		@REMARK This method should always return a valid handle because a game can't exist
 				without a zone i.e. there should be a current zone. */
 	inline RPG_ZONE*	CurrentZone();
-	RPG_ZONE*	GetZone( string zone_id );
+	RPG_ZONE*	GetZone( const string& zone_id );
 	/* Like GetLife( guid ), but also returns whether he's a party member or not in 'is_party'.
 		'is_party' is strictly a return value! It does not change the behaviour of this method. */
-	LIFE_OBJECT*		GetLife( string guid, bool& is_party );
+	LIFE_OBJECT*		GetLife( const string& guid, bool& is_party );
 	/* @RETURN LIFE_OBJECT handle to the given life. nullptr is returned if not found.
 		@REMARK Order of search: Party member list, local zone list, the other zones. */
-	LIFE_OBJECT*		GetLife( string guid )					{ bool b; return GetLife(guid,b); }
+	LIFE_OBJECT*		GetLife( const string& guid )					{ bool b; return GetLife(guid,b); }
 	/* Removes the given life. @RETURN true if successful, false if not found.
 		@REMARK Order of search: Party member list, local zone list, the other zones. */
-	bool				DeleteLife( string guid );
+	bool				DeleteLife( const string& guid );
 };
 
 extern RPG_State	*STATE;
